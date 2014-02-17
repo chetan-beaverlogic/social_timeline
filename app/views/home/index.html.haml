@@ -13,7 +13,7 @@
     %th
       Sr. No.
     %th
-      Message
+      Posts
     - if  @user_statuses_details.present? && @user_statuses_details["statuses"] && @user_statuses_details["statuses"]['data'].present?
       - @user_statuses_details["statuses"]['data'].each_with_index do |status, index|
         - if status['message'].present?
