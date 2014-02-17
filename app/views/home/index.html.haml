@@ -1,5 +1,6 @@
-%h1 Home#index
-%p
+%h1{style: 'text-align:center' }
+  Facebook Posts
+%p{:style => 'padding:10px;'}
   - if user_signed_in?
     = link_to "Logout", '/users/sign_out'
   - else
