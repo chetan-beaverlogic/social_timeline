@@ -1,0 +1,25 @@
+%h1 Home#index
+%p
+  - if user_signed_in?
+    = link_to "Logout", '/users/sign_out'
+  - else
+    = link_to "Click Here to Login via Facebook",user_omniauth_authorize_path(:facebook)
+    =# link_to "Click Here to Login via Twitter",user_omniauth_authorize_path(:twitter)
+
+
+%table.table.table-striped.table-bordered.table-hover{:width=> "744"}
+  %thead
+    %th
+      Sr. No.
+    %th
+      Message
+    - if  @user_statuses_details.present? && @user_statuses_details["statuses"] && @user_statuses_details["statuses"]['data'].present?
+      - @user_statuses_details["statuses"]['data'].each_with_index do |status, index|
+        - if status['message'].present?
+          %tr
+            %td
+              = index+1
+            %td
+              = status['message']
+
+
