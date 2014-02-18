@@ -1,11 +1,14 @@
 SocialTimeline::Application.routes.draw do
   get "home/index"
   devise_scope :user do
-    get '/users/sign_out' => 'devise/sessions#destroy'
+    get '/users/sign_out' => 'home#logout'
+    get '/users/sign_in' => 'home#back_to_root'
+    get '/users/sign_up' => 'home#back_to_root'
+
   end
 
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" } do
-    match '/users/sign_in' => 'users/sessions#create'
+
   end
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

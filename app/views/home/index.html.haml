@@ -1,16 +1,20 @@
 %p{:style => 'padding:10px;'}
-  - if user_signed_in?
+  - if session[:tw_token].present? or session[:fb_token].present?
     = link_to "Logout", '/users/sign_out'
-    %p{:style => 'padding:10px;'}
-      = link_to "Twitter",user_omniauth_authorize_path(:twitter)
-    %p{:style => 'padding:10px;'}
-      = link_to "Facebook",user_omniauth_authorize_path(:facebook)
-  - else
-    = link_to "Login", '/users/sign_in'
+  %p{:style => 'padding:10px;'}
+    - if session[:tw_token].present?
+      = link_to "Twitter Enabled",'javascript:void(0)', :class => 'btn btn-success navbar-btn'
+    - else
+      = link_to "Login with Twitter",user_omniauth_authorize_path(:twitter), :class => 'btn btn-default navbar-btn'
+  %p{:style => 'padding:10px;'}
+    - if session[:fb_token].present?
+      = link_to "Facebook Enabled",'javascript:void(0)', :class => 'btn btn-success navbar-btn'
+    - else
+      = link_to "Login with Facebook",user_omniauth_authorize_path(:facebook), :class => 'btn btn-default navbar-btn'
 
 
 
-- if current_user.present? and current_user.facebook_auth.present?
+- if session[:fb_token].present?
   %h1{style: 'text-align:center' }
     Facebook Posts
   %table.table.table-striped.table-bordered.table-hover{:width=> "744"}
@@ -28,7 +32,7 @@
               %td
                 = status['message']
 
-- if current_user.present? and current_user.twitter_auth.present?
+- if session[:tw_token].present? and session[:tw_secret].present?
   %h1{style: 'text-align:center' }
     Twitter Tweets
   %table.table.table-striped.table-bordered.table-hover{:width=> "744"}
