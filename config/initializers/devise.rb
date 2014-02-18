@@ -229,7 +229,7 @@ Devise.setup do |config|
   # up on your models and hooks.
   # config.omniauth :github, 'APP_ID', 'APP_SECRET', :scope => 'user,public_repo'
   config.omniauth :facebook, '232193500233565', 'd7d043200598a9a81074d24ba0656398',{:scope => "user_status", :client_options => {:ssl => {:ca_file => '/usr/lib/ssl/certs/ca-certificates.crt'}}}
-
+  config.omniauth :twitter, '9rgPKpQJil0ZaPgSVCeprw', 'WB9tAjq11TDLXPKvpTjGF1PkemjzyNnIt1iG3nKSU', :strategy_class => OmniAuth::Strategies::Twitter
 
 
   # ==> Warden configuration

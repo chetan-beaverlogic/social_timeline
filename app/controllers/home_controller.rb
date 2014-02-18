@@ -1,12 +1,18 @@
 class HomeController < ApplicationController
   def index
     if user_signed_in?
-      authentication = current_user.authentication
-      if authentication.present?
-        get_fb_graph_api_object(authentication.token)
-        get_user_statues_details(authentication.uid)
+      fb_auth = current_user.facebook_auth
+      if fb_auth.present?
+        get_fb_graph_api_object(fb_auth.token)
+        get_user_statues_details(fb_auth.uid)
         #render :text => @user_statuses_details["statuses"].inspect and return false
       end
+      tw_auth = current_user.twitter_auth
+      if tw_auth.present?
+        client  = Twitter::Client.new(oauth_token: tw_auth.token, oauth_token_secret: tw_auth.secret)
+        @tweets = client.user_timeline(page: 1, count: 100)
+      end
+
     end
   end
 

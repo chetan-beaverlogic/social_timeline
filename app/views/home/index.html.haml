@@ -1,26 +1,49 @@
-%h1{style: 'text-align:center' }
-  Facebook Posts
 %p{:style => 'padding:10px;'}
   - if user_signed_in?
     = link_to "Logout", '/users/sign_out'
+    %p{:style => 'padding:10px;'}
+      = link_to "Twitter",user_omniauth_authorize_path(:twitter)
+    %p{:style => 'padding:10px;'}
+      = link_to "Facebook",user_omniauth_authorize_path(:facebook)
   - else
-    = link_to "Click Here to Login via Facebook",user_omniauth_authorize_path(:facebook)
-    =# link_to "Click Here to Login via Twitter",user_omniauth_authorize_path(:twitter)
+    = link_to "Login", '/users/sign_in'
 
 
-%table.table.table-striped.table-bordered.table-hover{:width=> "744"}
-  %thead
-    %th
-      Sr. No.
-    %th
-      Posts
-    - if  @user_statuses_details.present? && @user_statuses_details["statuses"] && @user_statuses_details["statuses"]['data'].present?
-      - @user_statuses_details["statuses"]['data'].each_with_index do |status, index|
-        - if status['message'].present?
-          %tr
-            %td
-              = index+1
-            %td
-              = status['message']
+
+- if current_user.present? and current_user.facebook_auth.present?
+  %h1{style: 'text-align:center' }
+    Facebook Posts
+  %table.table.table-striped.table-bordered.table-hover{:width=> "744"}
+    %thead
+      %th
+        Sr. No.
+      %th
+        Posts
+      - if  @user_statuses_details.present? && @user_statuses_details["statuses"] && @user_statuses_details["statuses"]['data'].present?
+        - @user_statuses_details["statuses"]['data'].each_with_index do |status, index|
+          - if status['message'].present?
+            %tr
+              %td
+                = index+1
+              %td
+                = status['message']
+
+- if current_user.present? and current_user.twitter_auth.present?
+  %h1{style: 'text-align:center' }
+    Twitter Tweets
+  %table.table.table-striped.table-bordered.table-hover{:width=> "744"}
+    %thead
+      %th
+        Sr. No.
+      %th
+        Tweets
+      - if  @tweets.present?
+        - @tweets.each_with_index do |tweet, index|
+          - if tweet.present?
+            %tr
+              %td
+                = index+1
+              %td
+                = tweet.text
 
 

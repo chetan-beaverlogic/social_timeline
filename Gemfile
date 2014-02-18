@@ -55,4 +55,6 @@ gem "haml-rails"
 gem 'omniauth-facebook'
 gem 'koala'
 gem "twitter-bootstrap-rails"
+gem 'omniauth-twitter', '>=0.0.16'
+gem 'twitter','4.7.0'
 

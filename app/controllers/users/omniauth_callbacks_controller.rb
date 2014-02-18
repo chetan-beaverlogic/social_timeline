@@ -1,59 +1,57 @@
 class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   def facebook
-    data = request.env["omniauth.auth"].extra.raw_info
-    session[:access_token] = request.env["omniauth.auth"].credentials.token
-    if data.email.nil?
-      @email = data.link
+    if current_user.present?
+      auth  = current_user.facebook_auth
+      if auth.present?
+        update_authentication('facebook')
+      else
+        create_authentication('facebook')
+      end
     else
-      @email = data.email
+      redirect_to new_user_session_path
     end
-    user = User.find_by_email(@email)
-    if user.present?
-      user
-      update_authentication(user)
-    else # Create a user with a stub password.
-      user = create_new_user()
-      create_authentication(data, user)
-    end
-
-    if user.persisted?
-      flash[:notice] = I18n.t "devise.omniauth_callbacks.success", :kind => "#{params[:action]}".capitalize
-      sign_in_and_redirect user, :event => :authentication
-    else
-      session["devise.#{params[:action]}_data"] = request.env["omniauth.auth"]
-      redirect_to new_user_registration_url
-    end
+    redirect_to root_path
   end
 
-  def create_new_user
-    user = User.new
-    user.email = @email
-    user.encrypted_password = Devise.friendly_token[0, 20]
-    user.save(:validate => false)
-    user
+  def twitter
+    if current_user.present?
+      auth  = current_user.twitter_auth
+      if auth.present?
+        update_authentication('twitter')
+      else
+        create_authentication('twitter')
+      end
+    else
+      redirect_to new_user_session_path
+    end
+    redirect_to root_path
   end
 
-  def update_authentication(user)
-    authentication = Authentication.find_by_user_id(user.id)
-    if authentication.present?
-      authentication.update_attribute('token', request.env["omniauth.auth"].credentials.token)
-    else
-      create_authentication(request.env["omniauth.auth"],user)
+
+  def update_authentication(provider)
+    case provider
+      when 'facebook'
+        authentication = current_user.facebook_auth
+        authentication.update_attribute('token', request.env["omniauth.auth"].credentials.token)
+      when 'twitter'
+        authentication = current_user.twitter_auth
+        authentication.update_attributes({'token' =>  request.env["omniauth.auth"].credentials.token, 'secret' => request.env["omniauth.auth"].credentials.secret})
     end
   end
 
   private
 
-  def create_authentication(data, user)
-    auth = Authentication.find_by_uid_and_user_id(data.uid, @email)
-    if auth.nil?
-      authentication = Authentication.new
-      authentication.uid = request.env["omniauth.auth"].uid
-      authentication.token = request.env["omniauth.auth"].credentials.token
-      authentication.user_id = user.id
-      authentication.save
+  def create_authentication(provider)
+    auth = Authentication.new
+    auth.uid = request.env["omniauth.auth"].uid
+    auth.token = request.env["omniauth.auth"].credentials.token
+    if provider == 'twitter'
+      auth.secret = request.env["omniauth.auth"].credentials.secret
     end
+    auth.provider = provider
+    auth.user_id = current_user.id
+    auth.save
   end
 
 end
