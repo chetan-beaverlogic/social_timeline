@@ -38,7 +38,12 @@ class HomeController < ApplicationController
   end
 
   def logout
-    session.clear
-    redirect_to root_path
+    unless session[:fb_token].present?
+      redirect_to "https://www.facebook.com/logout.php?access_token=#{session[:fb_token]}&next=http://social-timeline.herokuapp.com/"
+      session.clear
+    else
+      session.clear
+      redirect_to root_path
+    end
   end
 end
