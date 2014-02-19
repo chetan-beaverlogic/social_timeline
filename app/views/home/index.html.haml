@@ -1,53 +1,86 @@
 %p{:style => 'padding:10px;'}
   - if session[:tw_token].present? or session[:fb_token].present?
-    = link_to "Logout", '/users/sign_out'
+    =# link_to "Logout", '/users/sign_out'
   %p{:style => 'padding:10px;'}
     - if session[:tw_token].present?
       = link_to "Twitter Enabled",'javascript:void(0)', :class => 'btn btn-success navbar-btn'
+      = link_to "Logout", user_logout_path('twitter')
+
     - else
       = link_to "Login with Twitter",user_omniauth_authorize_path(:twitter), :class => 'btn btn-default navbar-btn'
   %p{:style => 'padding:10px;'}
     - if session[:fb_token].present?
       = link_to "Facebook Enabled",'javascript:void(0)', :class => 'btn btn-success navbar-btn'
+      = link_to "Logout", user_logout_path('facebook')
+
     - else
       = link_to "Login with Facebook",user_omniauth_authorize_path(:facebook), :class => 'btn btn-default navbar-btn'
+  %p{:style => 'padding:10px;'}
+    - if session[:gp_uid].present? and session[:gp_token].present?
+      = link_to "Google Plus Enabled",'javascript:void(0)', :class => 'btn btn-success navbar-btn'
+      = link_to "Logout", user_logout_path('google_plus')
 
+    - else
+      = link_to "Login with Google",user_omniauth_authorize_path(:google_plus), :class => 'btn btn-default navbar-btn'
 
-
-- if session[:fb_token].present?
-  %h1{style: 'text-align:center' }
-    Facebook Posts
-  %table.table.table-striped.table-bordered.table-hover{:width=> "744"}
-    %thead
-      %th
-        Sr. No.
-      %th
-        Posts
-      - if  @user_statuses_details.present? && @user_statuses_details["statuses"] && @user_statuses_details["statuses"]['data'].present?
-        - @user_statuses_details["statuses"]['data'].each_with_index do |status, index|
-          - if status['message'].present?
-            %tr
-              %td
-                = index+1
-              %td
-                = status['message']
 
 - if session[:tw_token].present? and session[:tw_secret].present?
-  %h1{style: 'text-align:center' }
-    Twitter Tweets
-  %table.table.table-striped.table-bordered.table-hover{:width=> "744"}
-    %thead
-      %th
-        Sr. No.
-      %th
-        Tweets
-      - if  @tweets.present?
-        - @tweets.each_with_index do |tweet, index|
-          - if tweet.present?
-            %tr
-              %td
-                = index+1
-              %td
-                = tweet.text
 
+  .row-1
+    .span4
+      %h3{style: 'text-align:center' }
+        Twitter Tweets
+      %table.table.table-striped.table-bordered.table-hover{:width=> "744"}
+        %thead
+          %th
+            Sr. No.
+          %th
+            Tweets
+          - if  @tweets.present?
+            - @tweets.each_with_index do |tweet, index|
+              - if tweet.present?
+                %tr
+                  %td
+                    = index+1
+                  %td
+                    = tweet.text
 
+- if session[:fb_token].present?
+
+  .row-1
+    .span4
+      %h3{style: 'text-align:center' }
+        Facebook Posts
+      %table.table.table-striped.table-bordered.table-hover{:width=> "744"}
+        %thead
+          %th
+            Sr. No.
+          %th
+            Posts
+          - if  @user_statuses_details.present? && @user_statuses_details["statuses"] && @user_statuses_details["statuses"]['data'].present?
+            - @user_statuses_details["statuses"]['data'].each_with_index do |status, index|
+              - if status['message'].present?
+                %tr
+                  %td
+                    = index+1
+                  %td
+                    = status['message']
+- if session[:gp_uid].present? and session[:gp_token].present?
+  .row-1
+    .span4
+      %h3{style: 'text-align:center' }
+        Google Posts
+      %table.table.table-striped.table-bordered.table-hover{:width=> "744"}
+        %thead
+          %th
+            Sr. No.
+          %th
+            Posts
+          - if  @google_posts.present?
+            - @google_posts.each_with_index do |post, index|
+              - if post.present?
+                %tr
+                  %td
+                    = index+1
+                  %td
+                    = post.title

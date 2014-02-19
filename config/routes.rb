@@ -1,7 +1,7 @@
 SocialTimeline::Application.routes.draw do
   get "home/index"
   devise_scope :user do
-    get '/users/sign_out' => 'home#logout'
+    get '/users/sign_out' => 'home/sessions#destroy'
     get '/users/sign_in' => 'home#back_to_root'
     get '/users/sign_up' => 'home#back_to_root'
 
@@ -12,7 +12,7 @@ SocialTimeline::Application.routes.draw do
   end
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
-
+  get 'logout/:provider' => 'home#logout', as: :user_logout
   # You can have the root of your site routed with "root"
   root 'home#index'
 

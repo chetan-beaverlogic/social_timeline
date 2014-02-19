@@ -1,5 +1,14 @@
 class HomeController < ApplicationController
   def index
+    if session[:gp_uid].present? && session[:gp_token].present?
+     #render :text => session[:gp_token].inspect and return false
+      GooglePlus.api_key  = GOOGLE_API_KEY
+      person = GooglePlus::Person.get(session[:gp_uid], access_token: session[:gp_token])
+      if person.present? && person.list_activities.present? && person.list_activities.items.present?
+        @google_posts = person.list_activities.items
+      end
+    end
+
     if user_signed_in?
       #session.clear
       #fb_auth = current_user.facebook_auth
@@ -38,12 +47,19 @@ class HomeController < ApplicationController
   end
 
   def logout
-    unless session[:fb_token].present?
-      redirect_to "https://www.facebook.com/logout.php?access_token=#{session[:fb_token]}&next=http://social-timeline.herokuapp.com/"
-      session.clear
-    else
-      session.clear
-      redirect_to root_path
+    case params['provider']
+      when 'twitter'
+        session[:tw_token] = nil
+        session[:tw_secret]= nil
+      when 'facebook'
+        token = session[:fb_token]
+        session[:fb_token] = nil
+        #redirect_to "https://www.facebook.com/logout.php?access_token=#{token}&redirect_uri=http://127.0.0.1:3000"
+      when 'google_plus'
+        session[:gp_uid] = nil
+        session[:gp_token] = nil
     end
+    redirect_to root_path
+
   end
 end

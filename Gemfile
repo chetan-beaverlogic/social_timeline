@@ -57,4 +57,8 @@ gem 'koala'
 gem "twitter-bootstrap-rails"
 gem 'omniauth-twitter', '>=0.0.16'
 gem 'twitter','4.7.0'
+gem "omniauth-google-oauth2"
+gem 'google-api-client'
+gem 'google_plus'
+
 
