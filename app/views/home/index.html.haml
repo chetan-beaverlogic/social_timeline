@@ -15,11 +15,12 @@
 
     - else
       = link_to "Login with Facebook",user_omniauth_authorize_path(:facebook), :class => 'btn btn-default navbar-btn'
-  %p{:style => 'padding:10px;'}
+  %p#gpSession{:style => 'padding:10px;display:none;'}
+    = link_to "Login with Google",user_omniauth_authorize_path(:google_plus), :class => 'btn btn-default navbar-btn'
+  %p#gpSessionPageLoad{:style => 'padding:10px;'}
     - if session[:gp_uid].present? and session[:gp_token].present?
-      = link_to "Google Plus Enabled",'javascript:void(0)', :class => 'btn btn-success navbar-btn'
-      = link_to "Logout", user_logout_path('google_plus')
-
+      = link_to "Google Plus Enabled",'javascript:void(0)', :class => 'btn btn-success navbar-btn', :id => 'gp_enabled'
+      = link_to 'Logout', 'javascript:void(0);', :onclick => "myIFrame.location='https://www.google.com/accounts/Logout'; return false;", :target => "myIFrame", id: 'logoutText'
     - else
       = link_to "Login with Google",user_omniauth_authorize_path(:google_plus), :class => 'btn btn-default navbar-btn'
 
@@ -66,7 +67,7 @@
                   %td
                     = status['message']
 - if session[:gp_uid].present? and session[:gp_token].present?
-  .row-1
+  .row-1#gpSection
     .span4
       %h3{style: 'text-align:center' }
         Google Posts
@@ -85,7 +86,16 @@
                   %td
                     = post.title
 
+%iframe#myIFrame{:name => "myIFrame", :style => "display:none"}
 :javascript
   $('#fb_logout').on('click', function(){
     #{session[:fb_token] = nil}
+  });
+
+  $('#logoutText').on('click', function(){
+    #{session[:gp_uid] = nil}
+    #{session[:gp_token] = nil}
+    $('#gpSession').show()
+    $('#gpSessionPageLoad').hide();
+    $('#gpSection').hide();
   });
