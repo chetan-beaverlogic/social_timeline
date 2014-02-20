@@ -11,7 +11,7 @@
   %p{:style => 'padding:10px;'}
     - if session[:fb_token].present?
       = link_to "Facebook Enabled",'javascript:void(0)', :class => 'btn btn-success navbar-btn'
-      = link_to "Logout", user_logout_path('facebook')
+      = link_to "Logout", "https://www.facebook.com/logout.php?access_token=#{session[:fb_token]}&next=http://127.0.0.1:3000", id: 'fb_logout'
 
     - else
       = link_to "Login with Facebook",user_omniauth_authorize_path(:facebook), :class => 'btn btn-default navbar-btn'
@@ -84,3 +84,8 @@
                     = index+1
                   %td
                     = post.title
+
+:javascript
+  $('#fb_logout').on('click', function(){
+    #{session[:fb_token] = nil}
+  });
