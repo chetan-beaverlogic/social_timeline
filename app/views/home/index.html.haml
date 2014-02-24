@@ -1,100 +1,103 @@
-%p{:style => 'padding:10px;'}
-  - if user_signed_in?
-    = link_to "Logout", '/users/sign_out'
-  %p{:style => 'padding:10px;'}
-    - if @current_selected_user.present? && @current_selected_user.twitter_auth.present? && @current_selected_user.twitter_auth.time_line_statuses.present?
-      = link_to "Twitter Enabled",'javascript:void(0)', :class => 'btn btn-success navbar-btn'
-      = link_to "Logout", user_logout_path('twitter')
-
-    - else
-      = link_to "Login with Twitter",user_omniauth_authorize_path(:twitter), :class => 'btn btn-default navbar-btn'
-  %p{:style => 'padding:10px;'}
-    - if @current_selected_user.present? && @current_selected_user.facebook_auth.present? && @current_selected_user.facebook_auth.time_line_statuses.present?
-      = link_to "Facebook Enabled",'javascript:void(0)', :class => 'btn btn-success navbar-btn'
-      = link_to "Logout", user_logout_path('facebook'),  id: 'fb_logout'
-
-    - else
-      = link_to "Login with Facebook",user_omniauth_authorize_path(:facebook), :class => 'btn btn-default navbar-btn'
-  %p#gpSession{:style => 'padding:10px;display:none;'}
-    = link_to "Login with Google",user_omniauth_authorize_path(:google_plus), :class => 'btn btn-default navbar-btn'
-  %p#gpSessionPageLoad{:style => 'padding:10px;'}
-    - if @current_selected_user.present? && @current_selected_user.google_plus_auth.present? && @current_selected_user.google_plus_auth.time_line_statuses.present?
-      = link_to "Google Plus Enabled",'javascript:void(0)', :class => 'btn btn-success navbar-btn', :id => 'gp_enabled'
-      = link_to 'Logout', user_logout_path('google_plus'), :onclick => "myIFrame.location='https://www.google.com/accounts/Logout'; return false;", :target => "myIFrame", id: 'logoutText'
-
-      =# link_to 'Logout', user_logout_path('google_plus'), :onclick => "myIFrame.location='https://www.google.com/accounts/Logout'; return false;", :target => "myIFrame", id: 'logoutText'
-    - else
-      = link_to "Login with Google",user_omniauth_authorize_path(:google_plus), :class => 'btn btn-default navbar-btn'
-
-
 - if user_signed_in?
-  - if @current_selected_user.present? && @current_selected_user.twitter_auth.present? && @current_selected_user.twitter_auth.time_line_statuses.present?
 
-    .row-1
-      .span4
-        %h3{style: 'text-align:center' }
-          Twitter Tweets
-        %table.table.table-striped.table-bordered.table-hover{:width=> "744"}
-          %thead
-            %th
-              Sr. No.
-            %th
-              Tweets
-            - @current_selected_user.twitter_auth.time_line_statuses.each_with_index do |tweet, index|
-              - if tweet.present?
-                %tr
-                  %td
-                    = index+1
-                  %td
-                    = tweet.status
+  %p{:style => 'padding:10px;'}
+    = link_to "Logout", '/users/sign_out'
+    %p{:style => 'padding:10px;'}
+      - if @current_selected_user.present? && @current_selected_user.twitter_auth.present? && @current_selected_user.twitter_auth.time_line_statuses.present?
+        = link_to "Twitter Enabled",'javascript:void(0)', :class => 'btn btn-success navbar-btn'
+        = link_to "Logout", user_logout_path('twitter')
 
-  - if @current_selected_user.present? && @current_selected_user.facebook_auth.present? && @current_selected_user.facebook_auth.time_line_statuses.present?
+      - else
+        = link_to "Login with Twitter",user_omniauth_authorize_path(:twitter), :class => 'btn btn-default navbar-btn'
+    %p{:style => 'padding:10px;'}
+      - if @current_selected_user.present? && @current_selected_user.facebook_auth.present? && @current_selected_user.facebook_auth.time_line_statuses.present?
+        = link_to "Facebook Enabled",'javascript:void(0)', :class => 'btn btn-success navbar-btn'
+        = link_to "Logout", user_logout_path('facebook'),  id: 'fb_logout'
 
-    .row-1
-      .span4
-        %h3{style: 'text-align:center' }
-          Facebook Posts
-        %table.table.table-striped.table-bordered.table-hover{:width=> "744"}
-          %thead
-            %th
-              Sr. No.
-            %th
-              Posts
-            - @current_selected_user.facebook_auth.time_line_statuses.each_with_index do |post, index|
-              %tr
-                %td
-                  = index+1
-                %td
-                  = post.status
+      - else
+        = link_to "Login with Facebook",user_omniauth_authorize_path(:facebook), :class => 'btn btn-default navbar-btn'
+    %p#gpSession{:style => 'padding:10px;display:none;'}
+      = link_to "Login with Google",user_omniauth_authorize_path(:google_plus), :class => 'btn btn-default navbar-btn'
+    %p#gpSessionPageLoad{:style => 'padding:10px;'}
+      - if @current_selected_user.present? && @current_selected_user.google_plus_auth.present? && @current_selected_user.google_plus_auth.time_line_statuses.present?
+        = link_to "Google Plus Enabled",'javascript:void(0)', :class => 'btn btn-success navbar-btn', :id => 'gp_enabled'
+        = link_to 'Logout', user_logout_path('google_plus'), :onclick => "myIFrame.location='https://www.google.com/accounts/Logout'; return false;", :target => "myIFrame", id: 'logoutText'
 
-  - if @current_selected_user.present? && @current_selected_user.google_plus_auth.present? && @current_selected_user.google_plus_auth.time_line_statuses
-    .row-1#gpSection
-      .span4
-        %h3{style: 'text-align:center' }
-          Google Posts
-        %table.table.table-striped.table-bordered.table-hover{:width=> "744"}
-          %thead
-            %th
-              Sr. No.
-            %th
-              Posts
-            - @current_selected_user.google_plus_auth.time_line_statuses.each_with_index do |post, index|
-              - if post.present?
+        =# link_to 'Logout', user_logout_path('google_plus'), :onclick => "myIFrame.location='https://www.google.com/accounts/Logout'; return false;", :target => "myIFrame", id: 'logoutText'
+      - else
+        = link_to "Login with Google",user_omniauth_authorize_path(:google_plus), :class => 'btn btn-default navbar-btn'
+
+
+    - if @current_selected_user.present? && @current_selected_user.twitter_auth.present? && @current_selected_user.twitter_auth.time_line_statuses.present?
+
+      .row-1
+        .span4
+          %h3{style: 'text-align:center' }
+            Twitter Tweets
+          %table.table.table-striped.table-bordered.table-hover{:width=> "744"}
+            %thead
+              %th
+                Sr. No.
+              %th
+                Tweets
+              - @current_selected_user.twitter_auth.time_line_statuses.each_with_index do |tweet, index|
+                - if tweet.present?
+                  %tr
+                    %td
+                      = index+1
+                    %td
+                      = tweet.status
+
+    - if @current_selected_user.present? && @current_selected_user.facebook_auth.present? && @current_selected_user.facebook_auth.time_line_statuses.present?
+
+      .row-1
+        .span4
+          %h3{style: 'text-align:center' }
+            Facebook Posts
+          %table.table.table-striped.table-bordered.table-hover{:width=> "744"}
+            %thead
+              %th
+                Sr. No.
+              %th
+                Posts
+              - @current_selected_user.facebook_auth.time_line_statuses.each_with_index do |post, index|
                 %tr
                   %td
                     = index+1
                   %td
                     = post.status
 
-- else
-  = link_to "Login", '/users/sign_in'
+    - if @current_selected_user.present? && @current_selected_user.google_plus_auth.present? && @current_selected_user.google_plus_auth.time_line_statuses
+      .row-1#gpSection
+        .span4
+          %h3{style: 'text-align:center' }
+            Google Posts
+          %table.table.table-striped.table-bordered.table-hover{:width=> "744"}
+            %thead
+              %th
+                Sr. No.
+              %th
+                Posts
+              - @current_selected_user.google_plus_auth.time_line_statuses.each_with_index do |post, index|
+                - if post.present?
+                  %tr
+                    %td
+                      = index+1
+                    %td
+                      = post.status
 
-.row-1
-  .span5
-    %ul
-      - User.all.each do |user|
-        %li
-          = link_to user.email, public_time_line_path(user.id)
+  .row-1
+    .span5
+      %ul
+        - User.all.each do |user|
+          %li
+            = link_to user.email, public_time_line_path(user.id)
+
+- else
+  .span7.center
+    = link_to "Login", '/users/sign_in'
+
+
 
 
 %iframe#myIFrame{:name => "myIFrame", :style => "display:none"}
