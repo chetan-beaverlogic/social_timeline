@@ -6,6 +6,7 @@ SocialTimeline::Application.routes.draw do
     #get '/users/sign_up' => 'devise/registration#new'
 
   end
+  get '/show' => 'home#show' , as: :show
   get '/public_time_line/:id' => 'home#public_time_line' , as: :public_time_line
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" } do
 

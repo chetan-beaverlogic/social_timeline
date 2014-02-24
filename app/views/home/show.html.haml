@@ -1,0 +1,10 @@
+
+.span7
+  %table.table
+    - User.all.each do |user|
+      %tr
+        %td
+          = user.email
+        %td
+          = link_to "Show Public Timeline", public_time_line_path(user.id)
+
