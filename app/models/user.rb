@@ -14,4 +14,7 @@ class User < ActiveRecord::Base
     authentications.find_by_provider(:twitter)
   end
 
+  def google_plus_auth
+    authentications.find_by_provider(:google_plus)
+  end
 end

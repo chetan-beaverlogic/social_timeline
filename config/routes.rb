@@ -1,12 +1,12 @@
 SocialTimeline::Application.routes.draw do
   get "home/index"
   devise_scope :user do
-    get '/users/sign_out' => 'home/sessions#destroy'
-    get '/users/sign_in' => 'home#back_to_root'
-    get '/users/sign_up' => 'home#back_to_root'
+    get '/users/sign_out' => 'devise/sessions#destroy'
+    #get '/users/sign_in' => 'devise/sessions#new'
+    #get '/users/sign_up' => 'devise/registration#new'
 
   end
-
+  get '/public_time_line/:id' => 'home#public_time_line' , as: :public_time_line
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" } do
 
   end

@@ -1,0 +1,61 @@
+- if user_signed_in?
+  - if @current_selected_user.twitter_auth.present? && @current_selected_user.twitter_auth.time_line_statuses.present?
+
+    .row-1
+      .span4
+        %h3{style: 'text-align:center' }
+          Twitter Tweets
+        %table.table.table-striped.table-bordered.table-hover{:width=> "744"}
+          %thead
+            %th
+              Sr. No.
+            %th
+              Tweets
+            - @current_selected_user.twitter_auth.time_line_statuses.each_with_index do |tweet, index|
+              - if tweet.present?
+                %tr
+                  %td
+                    = index+1
+                  %td
+                    = tweet.status
+
+  - if @current_selected_user.facebook_auth.present? && @current_selected_user.facebook_auth.time_line_statuses.present?
+
+    .row-1
+      .span4
+        %h3{style: 'text-align:center' }
+          Facebook Posts
+        %table.table.table-striped.table-bordered.table-hover{:width=> "744"}
+          %thead
+            %th
+              Sr. No.
+            %th
+              Posts
+            - @current_selected_user.facebook_auth.time_line_statuses.each_with_index do |post, index|
+              %tr
+                %td
+                  = index+1
+                %td
+                  = post.status
+
+  - if @current_selected_user.google_plus_auth.present? && @current_selected_user.google_plus_auth.time_line_statuses
+    .row-1#gpSection
+      .span4
+        %h3{style: 'text-align:center' }
+          Google Posts
+        %table.table.table-striped.table-bordered.table-hover{:width=> "744"}
+          %thead
+            %th
+              Sr. No.
+            %th
+              Posts
+            - @current_selected_user.google_plus_auth.time_line_statuses.each_with_index do |post, index|
+              - if post.present?
+                %tr
+                  %td
+                    = index+1
+                  %td
+                    = post.status
+
+- else
+  = link_to "Login", '/users/sign_in'
