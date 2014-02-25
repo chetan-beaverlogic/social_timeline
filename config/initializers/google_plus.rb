@@ -1,1 +1,3 @@
+GOOGLE_API_TOKEN = '1074659683206-m45n8aktdvc9kuqu4ft5qmmbs8n52j1a.apps.googleusercontent.com'
+GOOGLE_API_SECRET = 'zqX1mXqBe7m6QtJ8SPd2QBO5'
 GOOGLE_API_KEY = 'AIzaSyBwXpYKzmP244dCvXJMWbD6zZa4bPCVkiY'
