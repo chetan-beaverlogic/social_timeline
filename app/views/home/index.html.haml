@@ -3,14 +3,14 @@
   %p{:style => 'padding:10px;'}
     = link_to "Logout", '/users/sign_out'
     %p{:style => 'padding:10px;'}
-      - if @current_selected_user.present? && @current_selected_user.twitter_auth.present? && @current_selected_user.twitter_auth.time_line_statuses.present?
+      - if @current_selected_user.present? && @current_selected_user.twitter_auth.present?
         = link_to "Twitter Enabled",'javascript:void(0)', :class => 'btn btn-success navbar-btn'
         = link_to "Disable", user_logout_path('twitter')
 
       - else
         = link_to "Login with Twitter",user_omniauth_authorize_path(:twitter), :class => 'btn btn-default navbar-btn'
     %p{:style => 'padding:10px;'}
-      - if @current_selected_user.present? && @current_selected_user.facebook_auth.present? && @current_selected_user.facebook_auth.time_line_statuses.present?
+      - if @current_selected_user.present? && @current_selected_user.facebook_auth.present?
         = link_to "Facebook Enabled",'javascript:void(0)', :class => 'btn btn-success navbar-btn'
         = link_to "Disable", user_logout_path('facebook'),  id: 'fb_logout'
 
@@ -19,7 +19,7 @@
     %p#gpSession{:style => 'padding:10px;display:none;'}
       = link_to "Login with Google",user_omniauth_authorize_path(:google_plus), :class => 'btn btn-default navbar-btn'
     %p#gpSessionPageLoad{:style => 'padding:10px;'}
-      - if @current_selected_user.present? && @current_selected_user.google_plus_auth.present? && @current_selected_user.google_plus_auth.time_line_statuses.present?
+      - if @current_selected_user.present? && @current_selected_user.google_plus_auth.present?
         = link_to "Google Plus Enabled",'javascript:void(0)', :class => 'btn btn-success navbar-btn', :id => 'gp_enabled'
         = link_to 'Disable', user_logout_path('google_plus')
 
@@ -67,7 +67,7 @@
                   %td
                     = post.status
 
-    - if @current_selected_user.present? && @current_selected_user.google_plus_auth.present? && @current_selected_user.google_plus_auth.time_line_statuses.present?
+    - if @current_selected_user.present? && @current_selected_user.google_plus_auth.present?
       .row-1#gpSection
         .span4
           %h3{style: 'text-align:center' }
