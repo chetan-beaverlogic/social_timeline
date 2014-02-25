@@ -1,4 +1,9 @@
 class HomeController < ApplicationController
+  require 'net/http'
+  require 'rubygems'
+  require 'json'
+  require 'open-uri'
+
   def index
     @current_selected_user = current_user
     if @current_selected_user.present?
@@ -44,14 +49,13 @@ class HomeController < ApplicationController
     begin
       if current_selected_user and current_selected_user.google_plus_auth.present?
         if !current_selected_user.google_plus_auth.time_line_statuses.present?
-          person = GooglePlus::Person.get(current_selected_user.google_plus_auth.uid)
-          if person.present? && person.list_activities.present? && person.list_activities.items.present?
-            @google_posts = person.list_activities.items
+          data = Net::HTTP.get(URI.parse("https://www.googleapis.com/plus/v1/people/#{@current_selected_user.google_plus_auth.uid}/activities/public?key=#{GOOGLE_API_KEY}"))
+          if data.present?
+            @result = JSON.parse(data)
           end
-          if @google_posts.present?
-            GooglePlus.api_key = GOOGLE_API_KEY
-            @google_posts.each do |post|
-              TimeLineStatus.create(status: post.title, authentication_id: current_selected_user.google_plus_auth.id)
+          if @result.present?
+            @result['items'].each do |post|
+              TimeLineStatus.create(status: post["title"], authentication_id: current_selected_user.google_plus_auth.id)
             end
           end
         end
