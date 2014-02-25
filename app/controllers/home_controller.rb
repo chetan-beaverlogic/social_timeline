@@ -93,30 +93,21 @@ class HomeController < ApplicationController
       when 'twitter'
         twitter_auth  = current_user.twitter_auth
         twitter_auth.destroy
-        redirect_to root_path
       when 'facebook'
        # render :text => current_user.facebook_auth.inspect and return false
         fb_auth  = current_user.facebook_auth
         token = fb_auth.token
         fb_auth.destroy
-        redirect_to "https://www.facebook.com/logout.php?access_token=#{token}&next=http://127.0.0.1:3000"
+        #redirect_to "https://www.facebook.com/logout.php?access_token=#{token}&next=http://127.0.0.1:3000"
       when 'google_plus'
         google_auth  = current_user.google_plus_auth
         google_auth.destroy
-        redirect_to root_path
-
     end
-
+    redirect_to root_path
   end
 
   def public_time_line
     @current_selected_user = User.find(params[:id])
-    if @current_selected_user.present?
-      fetch_google_plus_timeline(@current_selected_user)
-      fetch_facebook_timeline(@current_selected_user)
-      fetch_twitter_timeline(@current_selected_user)
-    end
-
   end
 
   def time_line_status_params
