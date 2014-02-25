@@ -230,7 +230,7 @@ Devise.setup do |config|
   # config.omniauth :github, 'APP_ID', 'APP_SECRET', :scope => 'user,public_repo'
   config.omniauth :facebook, '232193500233565', 'd7d043200598a9a81074d24ba0656398',{:scope => "user_status", :client_options => {:ssl => {:ca_file => '/usr/lib/ssl/certs/ca-certificates.crt'}}}
   config.omniauth :twitter, '9rgPKpQJil0ZaPgSVCeprw', 'WB9tAjq11TDLXPKvpTjGF1PkemjzyNnIt1iG3nKSU', :strategy_class => OmniAuth::Strategies::Twitter
-  config.omniauth :google_plus, GOOGLE_API_TOKEN ,GOOGLE_API_SECRET,{
+  config.omniauth :google_plus, '1074659683206-m45n8aktdvc9kuqu4ft5qmmbs8n52j1a.apps.googleusercontent.com' ,'zqX1mXqBe7m6QtJ8SPd2QBO5',{
       access_type: "offline",
       prompt: "consent" ,
       :scope => "userinfo.email, userinfo.profile, plus.login, https://www.googleapis.com/auth/plus.me"
